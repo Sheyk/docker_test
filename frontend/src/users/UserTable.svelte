@@ -3,25 +3,29 @@
     import type { User } from './models'
     import AddUserForm from './AddUserForm.svelte'
 
-    let getUserPromise = getUsers()
+    let getUserPromise = get()
 
-    async function getUsers(){
+    async function get(){
         let response = await fetch(apiUrl + '/user')
         return await response.json()        
     }
 
-    function remove(user: User){
-        let users = []
-        let index = users.indexOf(user)
-        users.splice(index, 1)
-        users = users
+    async function add(firstname: string, lastname: string){
+        await fetch(apiUrl + '/user', { 
+            method: 'POST',
+            body: JSON.stringify({firstname, lastname}),
+            headers: { 'Content-Type': 'application/json'}
+        })
+        getUserPromise = get()
     }
 
-    function add(firstname: string, lastname: string){
-        let users = []
-        let id = Math.max(...users.map(x => x.id)) + 1
-        users.push({ id, firstname, lastname })
-        users = users
+    async function remove(user: User){
+        await fetch(apiUrl + '/user', { 
+            method: 'DELETE',
+            body: JSON.stringify(user),
+            headers: { 'Content-Type': 'application/json'}
+        })
+        getUserPromise = get()
     }
 </script>
 

@@ -3,6 +3,13 @@
 
     let firstname = ''
     let lastname = ''
+
+    $:canSubmit = firstname && lastname
+
+    function onLastnameKeyDown(event: KeyboardEvent){
+        if(event.key === "Enter" && canSubmit)
+            add(firstname, lastname)
+    }
 </script>
 
 <div class='form-container'>
@@ -12,9 +19,9 @@
     </div>
     <div>
         <label for='lastname'>Lastname</label>
-        <input name='lastname' bind:value={lastname} placeholder="Doe"/>
+        <input name='lastname' bind:value={lastname} on:keydown={onLastnameKeyDown} placeholder="Doe"/>
     </div>
-    <button disabled={!firstname || !lastname} on:click={() => add(firstname, lastname)}>Add User</button>
+    <button disabled={!canSubmit} on:click={() => add(firstname, lastname)}>Add User</button>
 </div>
 
 <style>

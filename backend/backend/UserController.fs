@@ -2,6 +2,7 @@
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
+open System.Linq
 open backend
 
 [<ApiController>]
@@ -11,8 +12,18 @@ type UserController (logger : ILogger<UserController>) =
 
     [<HttpGet>]
     member _.Get() =
-        [|
-            { Id = 1; Firstname = "John"; Lastname = "Doe"; }
-            { Id = 2; Firstname = "Mary"; Lastname = "Jane"; }
-            { Id = 3; Firstname = "Barry"; Lastname = "White"; }
-        |]
+        UserContextFactory().build().users.ToList()
+    
+    [<HttpPost>]
+    member _.Post([<FromBody>] user: User) =
+        let userContext = UserContextFactory().build()
+        userContext.users.Add(user) |> ignore
+        userContext.SaveChanges() |> ignore
+        ()
+
+    [<HttpDelete>]
+    member _.Delete([<FromBody>] user: User) =
+        let userContext = UserContextFactory().build()
+        userContext.users.Remove(user) |> ignore
+        userContext.SaveChanges() |> ignore
+        ()
