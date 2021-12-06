@@ -47,14 +47,20 @@
                 <td colspan='3'><br><i>Fetching users data...</i></td>
             </tr>
         {:then users}
-            {#each users as user}
+            {#if users.length > 0}
+                {#each users as user}
+                    <tr>
+                        <td>{user.id}</td>
+                        <td>{user.firstname}</td>
+                        <td>{user.lastname}</td>
+                        <td><div class='delete-btn' on:click={() => remove(user)}>x</div></td>
+                    </tr>
+                {/each}
+            {:else}
                 <tr>
-                    <td>{user.id}</td>
-                    <td>{user.firstname}</td>
-                    <td>{user.lastname}</td>
-                    <td><div class='delete-btn' on:click={() => remove(user)}>x</div></td>
+                    <td colspan='3'><br><i>No user yet. Add your first user above.</i></td>
                 </tr>
-            {/each}
+            {/if}
         {:catch error}
             <tr>
                 <td colspan='3'><br><i>Could not fetch user datas: {error}</i></td>
