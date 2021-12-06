@@ -2,15 +2,12 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-COPY rollup.config.js ./
 COPY package*.json ./
 
 RUN npm ci
 
 COPY . .
 
-RUN npm run build
+EXPOSE 8080
 
-EXPOSE 5000
-
-CMD [ "node", "run", "docker-dev" ]
+CMD [ "node", "run", "dev" ]

@@ -26,8 +26,4 @@
     button {
         height: 2.60em;
     }
-
-    input {
-        height: 2.60em; 
-    }
 </style>
