@@ -3,6 +3,6 @@
 </script>
 
 <main>
-	<h1>Database - Users</h1>
+	<h1>Database - User</h1>
 	<UserTable/>
 </main>

@@ -1,7 +1,6 @@
 namespace backend
 
 open System
-open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting

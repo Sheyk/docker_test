@@ -1,24 +1,24 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
     import { apiUrl } from '../config'
     import type { User } from './models'
     import AddUserForm from './AddUserForm.svelte'
 
-    let users = []
+    let getUserPromise = getUsers()
 
-    onMount(async () => {
-        await fetch(apiUrl + '/user')
-            .then(r => r.json())
-            .then(data => users = data)
-    })
+    async function getUsers(){
+        let response = await fetch(apiUrl + '/user')
+        return await response.json()        
+    }
 
     function remove(user: User){
+        let users = []
         let index = users.indexOf(user)
         users.splice(index, 1)
         users = users
     }
 
     function add(firstname: string, lastname: string){
+        let users = []
         let id = Math.max(...users.map(x => x.id)) + 1
         users.push({ id, firstname, lastname })
         users = users
@@ -38,14 +38,24 @@
         </tr>
     </thead>
     <tbody>
-        {#each users as user}
+        {#await getUserPromise}
             <tr>
-                <td>{user.id}</td>
-                <td>{user.firstname}</td>
-                <td>{user.lastname}</td>
-                <td><div class='delete-btn' on:click={() => remove(user)}>x</div></td>
+                <td colspan='3'><br><i>Fetching users data...</i></td>
             </tr>
-        {/each}
+        {:then users}
+            {#each users as user}
+                <tr>
+                    <td>{user.id}</td>
+                    <td>{user.firstname}</td>
+                    <td>{user.lastname}</td>
+                    <td><div class='delete-btn' on:click={() => remove(user)}>x</div></td>
+                </tr>
+            {/each}
+        {:catch error}
+            <tr>
+                <td colspan='3'><br><i>Could not fetch user datas: {error}</i></td>
+            </tr>
+        {/await}
     </tbody>
 </table>
 

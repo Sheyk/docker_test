@@ -125,4 +125,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-bundle.js
+build/
