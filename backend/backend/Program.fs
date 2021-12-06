@@ -17,7 +17,9 @@ module Program =
         builder.Services.AddControllers()
         builder.Services.AddCors(fun options ->
                options.AddDefaultPolicy(fun optionBuilder ->
-                   optionBuilder.SetIsOriginAllowed(fun origin -> Uri(origin).IsLoopback)
+                   optionBuilder.AllowAnyOrigin()
+                   optionBuilder.AllowAnyHeader()
+                   optionBuilder.AllowAnyMethod()
                    ())
                ())
 

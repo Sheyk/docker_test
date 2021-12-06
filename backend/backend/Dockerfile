@@ -1,20 +1,17 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.100-alpine3.14-amd64 AS base
+FROM mcr.microsoft.com/dotnet/sdk:6.0.100-bullseye-slim-amd64
+
+WORKDIR /vsdbg
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+            unzip \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sSL https://aka.ms/getvsdbgsh \
+        | bash /dev/stdin -v latest -l /vsdbg
+RUN apt-get update && apt-get install -y procps --no-install-recommends
+
+ENV DOTNET_USE_POLLING_FILE_WATCHER 1
+
 WORKDIR /app
-EXPOSE 5000
-ENV ASPNETCORE_URLS=http://*:5000
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0.100-alpine3.14-amd64 AS build
-WORKDIR /src
-COPY "./backend.fsproj" .
-RUN dotnet restore "./backend.fsproj"
-COPY . .
-WORKDIR /src/.
-RUN dotnet build "backend.fsproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "backend.fsproj" -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT [ "dotnet", "backend.dll" ]
+ENTRYPOINT dotnet watch run --urls=http://+:5000

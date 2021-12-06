@@ -17,6 +17,7 @@ services:
   backend:
     build: ./backend/backend
     container_name: backend
+    volumes:
+      - ./backend/backend:/app
     ports:
-      - 7208:7208
       - 5000:5000
