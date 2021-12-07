@@ -23,6 +23,6 @@ Wait for the containers to initialize (the first time may take a few minutes).
 You're done!
 
 The apps run on the following addresses:
-- frontend - http://localhost:8080
-- backend - http://localhost:5000
-- database - http://localhost:5432
+- frontend - http://localhost:8080/
+- backend - http://localhost:5000/
+- database - http://localhost:5432/
