@@ -2,8 +2,8 @@
 
 This app runs with docker and contains the following components:
 - frontend - [SvelteJS](https://svelte.dev/)
-- backend - [F# dotnet core](https://fsharp.org/)
-- database - [Postgres](https://www.postgresql.org/)
+- backend - [F#](https://fsharp.org/)
+- database - [PostgreSQL](https://www.postgresql.org/)
 
 ## Requirements
 
